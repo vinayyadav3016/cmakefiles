@@ -1,0 +1,7 @@
+INCLUDE(CMakeForceCompiler)
+SET(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM_PROCESSOR arm)
+SET(CMAKE_SYSTEM_VERSION 1)
+CMAKE_FORCE_C_COMPILER(arm-linux-gnueabihf-gcc GNU)
+CMAKE_FORCE_CXX_COMPILER(arm-linux-gnueabihf-g++ GNU)
+SET(CMAKE_ROOT_PATH  /usr/arm-linux-gnueabihf/)

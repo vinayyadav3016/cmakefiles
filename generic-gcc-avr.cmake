@@ -232,3 +232,23 @@ function(avr_target_link_libraries EXECUTABLE_TARGET)
 
 	target_link_libraries(${TARGET_LIST} ${NON_TARGET_LIST})
 endfunction(avr_target_link_libraries EXECUTABLE_TARGET)
+
+function(add_avr_executable_upload EXECUTABLE)
+	# upload target
+	message("upload_${EXECUTABLE} ${AVRDUDE} -p${AVR_MCU} -c${AVR_PROGRAMMER} -P${AVR_PROGRAMMER_PORT} -b${AVR_PROGRAMMER_BAUDRATE} ${AVR_PROGRAMMER_OPTIONS} -Uflash:w:${HEX_OUTPUT_PATH}${EXECUTABLE}${MCU_TYPE_FOR_FILENAME}.hex:i")
+	if(PROGRAM_EEPROM)
+		#add_custom_target(upload_${EXECUTABLE}
+		#	COMMAND ${AVRDUDE} -p ${AVR_MCU} -c ${AVR_PROGRAMMER} ${AVR_PROGRAMMER_OPTIONS} -U flash:w:${EXECUTABLE}.hex -U eeprom:w:${EXECUTABLE}_eeprom.hex
+		#	DEPENDS ${EXECUTABLE})
+	else(PROGRAM_EEPROM)
+		add_custom_target(upload_${EXECUTABLE}
+			COMMAND ${AVRDUDE} 
+			-p${AVR_MCU} 
+			-c${AVR_PROGRAMMER} 
+			-P${AVR_PROGRAMMER_PORT} 
+			-b${AVR_PROGRAMMER_BAUDRATE} 
+			${AVR_PROGRAMMER_OPTIONS} 
+			-Uflash:w:${HEX_OUTPUT_PATH}${EXECUTABLE}${MCU_TYPE_FOR_FILENAME}.hex:i 
+			DEPENDS ${HEX_OUTPUT_PATH}${EXECUTABLE}${MCU_TYPE_FOR_FILENAME}.hex)
+	endif(PROGRAM_EEPROM)
+endfunction(add_avr_executable_upload)
